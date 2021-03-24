@@ -17,17 +17,18 @@ public class ProductManager {
     public Product[] serachById(String text) {
         Product[] result = new Product[0];
         result = repository.findAll();
-        int index = -1;
+        Product[] tmp = new Product[result.length];
+        Product[] resultReturn = new Product[result.length];
+        int index = 0;
         for (Product product : result) {
-            index++;
             if (matches(product, text)) {
-                Product[] tmp = new Product[result.length + 1];
-                System.arraycopy(result, index, tmp, index+1, 1);
-                tmp[tmp.length - 1] = product;
-                result = tmp;
+
+                tmp[index] = product;
+                index++;
+                resultReturn = tmp;
             }
         }
-        return result;
+        return resultReturn;
     }
 
     public boolean matches(Product product, String search) {
