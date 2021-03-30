@@ -1,10 +1,12 @@
 
-package ru.netology.domain;
+package ru.netology.manager;
 
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import ru.netology.domain.Book;
+import ru.netology.domain.Product;
+import ru.netology.domain.Smartphone;
 import ru.netology.repository.ProductRepository;
+
+import java.util.ArrayList;
 
 public class ProductManager {
 
@@ -14,55 +16,49 @@ public class ProductManager {
         this.repository = repository;
     }
 
-    public Product[] serachById(String text) {
-        Product[] result = new Product[0];
-        result = repository.findAll();
-        Product[] tmp = new Product[result.length];
-        Product[] resultReturn = new Product[result.length];
-        int index = 0;
-        for (Product product : result) {
+    public Product[] searchById(String text) {
+        Product[] currentArray = new Product[0];
+        currentArray = repository.findAll();
+        Product[] resultReturn = new Product[currentArray.length];
+        ArrayList<Product> resultNew = new ArrayList<>();
+        for (Product product : currentArray) {
             if (matches(product, text)) {
 
-                tmp[index] = product;
-                index++;
-                resultReturn = tmp;
+                resultNew.add(product);
+                resultReturn = resultNew.toArray(new Product[0]);
             }
         }
         return resultReturn;
     }
 
     public boolean matches(Product product, String search) {
-        boolean condition = false;
         if (product instanceof Book) {
             Book book = (Book) product;
             if (book.getName().equalsIgnoreCase(search)) {
-                boolean conditionActual = true;
-                condition = conditionActual;
+                return true;
             }
             if (book.getAuthor().equalsIgnoreCase(search)) {
-                boolean conditionActual = true;
-                condition = conditionActual;
+                return true;
             }
 
         }
 
         if (product instanceof Smartphone) {
             Smartphone smartphone = (Smartphone) product;
+
             if (smartphone.getName().equalsIgnoreCase(search)) {
-                boolean conditionActual = true;
-                condition = conditionActual;
+                return true;
             }
             if (smartphone.getLabelName().equalsIgnoreCase(search)) {
-                boolean conditionActual = true;
-                condition = conditionActual;
+                return true;
             }
 
         }
 
-        return condition;
+        return false;
     }
 
-    public void addTo (Product item){
+    public void addTo(Product item) {
         repository.save(item);
     }
 
