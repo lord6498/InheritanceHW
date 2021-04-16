@@ -68,4 +68,15 @@ class ProductManagerTest {
         Assertions.assertArrayEquals(expected, actualItem);
 
     }
+
+    @Test
+    void bookDosntExistSearchByAuthor() {
+
+        Product[] expected = null;
+        Product[] actualItem = manager.searchById("G.R.R Marting Junior");
+
+
+        Assertions.assertArrayEquals(expected, actualItem);
+
+    }
 }

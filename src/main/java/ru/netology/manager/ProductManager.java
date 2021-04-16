@@ -18,17 +18,29 @@ public class ProductManager {
 
     public Product[] searchById(String text) {
         Product[] currentArray = new Product[0];
-        currentArray = repository.findAll();
+
+        try {
+            currentArray = repository.findAll();
+        } catch (Exception e) {
+            System.out.println("Ничего не передается");
+            e.printStackTrace();
+        }
+
         Product[] resultReturn = new Product[currentArray.length];
         ArrayList<Product> resultNew = new ArrayList<>();
+        int index = 0;
         for (Product product : currentArray) {
             if (matches(product, text)) {
 
                 resultNew.add(product);
                 resultReturn = resultNew.toArray(new Product[0]);
+                index++;
             }
         }
-        return resultReturn;
+        if (index!=0){
+            return resultReturn;
+        }
+        return null;
     }
 
     public boolean matches(Product product, String search) {
